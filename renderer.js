@@ -1,7 +1,14 @@
-const information = document.getElementById("info");
-information.innerText = `This app is using Chrome (v${versions.chrome()}), Node.js (v${versions.node()}), and Electron (v${versions.electron()})`;
-
-const getPing = async () => {
-  const response = window.versions.ping();
-  console.log(response);
-};
+document
+  .getElementById("toggle-dark-mode")
+  .addEventListener("click", async () => {
+    const isDarkMode = await window.darkMode.toggle();
+    document.getElementById("theme-source").innerText = isDarkMode
+      ? "Dark"
+      : "Light";
+  });
+document
+  .getElementById("reset-to-system")
+  .addEventListener("click", async () => {
+    await window.darkMode.system();
+    document.getElementById("theme-source").innerText = "System";
+  });
