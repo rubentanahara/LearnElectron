@@ -4,7 +4,9 @@
   "description": "learning electron",
   "main": "main.js",
   "scripts": {
-    "start": "electronmon .",
+    "start": "electron .",
+    "start:dev": "electronmon . --trace-warnings",
+    "format": "prettier --write \"**/*.js\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ruben Tanahara",

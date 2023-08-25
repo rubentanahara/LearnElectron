@@ -3,8 +3,9 @@ const { ipcMain } = require('electron/main');
 const path = require('path');
 const createWindow = () => {
   const win = new BrowserWindow({
+    title: 'Electron IPC',
     width: 800,
-    height: 600,
+    height: 800,
     webPreferences: {
       // __dirname is the current directory
       // path.join is used to concatenate directories
