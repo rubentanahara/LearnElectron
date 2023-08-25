@@ -4,12 +4,14 @@
   "description": "learning electron",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "electronmon .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ruben Tanahara",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^26.1.0"
+    "electron": "^26.1.0",
+    "electronmon": "^2.0.2",
+    "prettier": "3.0.2"
   }
 }
