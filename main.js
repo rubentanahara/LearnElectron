@@ -1,38 +1,63 @@
-const { app, BrowserWindow } = require("electron");
-const { ipcMain } = require("electron/main");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
-const createWindow = () => {
-  const win = new BrowserWindow({
+
+let bluetoothPinCallback;
+let selectBluetoothCallback;
+
+function createWindow() {
+  const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      // __dirname is the current directory
-      // path.join is used to concatenate directories
-      // preload is the script that will be loaded before the renderer
-      // so that we can have access to the ipcRenderer
       preload: path.join(__dirname, "preload.js"),
     },
   });
 
-  win.loadFile("index.html");
-};
+  mainWindow.webContents.on(
+    "select-bluetooth-device",
+    (event, deviceList, callback) => {
+      event.preventDefault();
+      selectBluetoothCallback = callback;
+      const result = deviceList.find((device) => {
+        return device.deviceName === "test";
+      });
+      if (result) {
+        callback(result.deviceId);
+      } else {
+        // The device wasn't found so we need to either wait longer (eg until the
+        // device is turned on) or until the user cancels the request
+      }
+    },
+  );
 
-// This method will be called when Electron has finished
-app.on("ready", () => {
-  ipcMain.handle("ping", () => "pong"); // This is the function that will be invoked when we call ping from the renderer
+  ipcMain.on("cancel-bluetooth-request", (event) => {
+    selectBluetoothCallback("");
+  });
 
+  // Listen for a message from the renderer to get the response for the Bluetooth pairing.
+  ipcMain.on("bluetooth-pairing-response", (event, response) => {
+    bluetoothPinCallback(response);
+  });
+
+  mainWindow.webContents.session.setBluetoothPairingHandler(
+    (details, callback) => {
+      bluetoothPinCallback = callback;
+      // Send a message to the renderer to prompt the user to confirm the pairing.
+      mainWindow.webContents.send("bluetooth-pairing-request", details);
+    },
+  );
+
+  mainWindow.loadFile("index.html");
+}
+
+app.whenReady().then(() => {
   createWindow();
-  //   app.whenReady().then(createWindow); // This is the same as above
-  app.on("activate", () => {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
-    }
+
+  app.on("activate", function () {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
 });
 
-app.on("window-all-closed", () => {
-  // Quit when all windows are closed.
+app.on("window-all-closed", function () {
   if (process.platform !== "darwin") app.quit();
 });

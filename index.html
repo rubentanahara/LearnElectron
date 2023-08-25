@@ -1,19 +1,18 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8" />
-    <title>Hello World!</title>
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="script-src 'self' 'unsafe-inline';"
-    />
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <title>Web Bluetooth API</title>
   </head>
   <body>
-    <h1>Hello World!</h1>
-    <p>
-      We are using Node.js <span id="node-version"></span>, Chromium
-      <span id="chrome-version"></span>, and Electron
-      <span id="electron-version"></span>.
-    </p>
+    <h1>Web Bluetooth API</h1>
+
+    <button id="clickme">Test Bluetooth</button>
+    <button id="cancel">Cancel Bluetooth Request</button>
+
+    <p>Currently selected bluetooth device: <strong id="device-name""></strong></p>
+
+    <script src="./renderer.js"></script>
   </body>
 </html>
