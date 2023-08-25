@@ -1,7 +1,7 @@
-const information = document.getElementById('info');
-information.innerText = `This app is using Chrome (v${versions.chrome()}), Node.js (v${versions.node()}), and Electron (v${versions.electron()})`;
+function handleKeyPress(event) {
+  // You can put code here to handle the keypress.
+  document.getElementById('last-keypress').innerText = event.key;
+  console.log(`You pressed ${event.key}`);
+}
 
-const getPing = async () => {
-  const response = window.versions.ping();
-  console.log(response);
-};
+window.addEventListener('keyup', handleKeyPress, true);
