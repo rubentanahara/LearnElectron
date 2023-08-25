@@ -1,0 +1,15 @@
+{
+  "name": "electron-app",
+  "version": "1.0.0",
+  "description": "learning electron",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ruben Tanahara",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^26.1.0"
+  }
+}
